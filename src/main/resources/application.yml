@@ -25,6 +25,10 @@ server:
   instance:
     preferIpAddress: true
     hostname: ms-operaciones-production-movies.up.railway.app
+    non-secure-port-enabled: false
+    secure-port-enabled: true
+    non-secure-port: 80
+    secure-port: 443
 
 ## Configuracion secundaria (custom)
 getProduct:

@@ -1,16 +1,18 @@
 package com.unir.apirest_operaciones.data;
 
 import com.unir.apirest_operaciones.model.customers.customer.Customer;
-import org.springframework.data.jpa.repository.JpaRepository;
+import com.unir.apirest_operaciones.model.customers.requestcustomers.CreateCustomerRequest;
+import org.springframework.data.elasticsearch.repository.ElasticsearchRepository;
 
-public interface ICustomerRepository extends JpaRepository<Customer, Integer> {
-    //List<Customer> findByName(String names);
-    //List<Customer> findAll();
-   // Customer save(Customer customer);
+import java.util.Optional;
 
-//    Optional<ElasticIngredient> findByInternalName(String name);
-//
-//    List<ElasticIngredient> findAll();
-//
-//    ElasticIngredient save(ElasticIngredient ingredient);
+
+public interface ICustomerRepository extends ElasticsearchRepository<Customer, String> {
+
+    Optional<Customer> findById(String id);
+
+    Customer save(CreateCustomerRequest customer);
+
+    Boolean delete(String id);
+
 }

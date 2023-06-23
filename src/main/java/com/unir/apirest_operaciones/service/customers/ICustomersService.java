@@ -6,7 +6,7 @@ import com.unir.apirest_operaciones.model.customers.requestcustomers.CreateCusto
 import java.util.List;
 
 public interface ICustomersService {
-    List<Customer> getCustomers();
+    List<Customer> getCustomers(String nombre, String apellido, String documento);
 
     Customer getCustomer(String customerId);
 

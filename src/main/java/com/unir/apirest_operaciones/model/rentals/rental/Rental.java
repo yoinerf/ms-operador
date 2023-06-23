@@ -1,35 +1,36 @@
 package com.unir.apirest_operaciones.model.rentals.rental;
 
 
-import jakarta.persistence.*;
 import lombok.*;
+import org.springframework.data.annotation.Id;
+import org.springframework.data.elasticsearch.annotations.*;
 
-import java.util.Date;
 
-@Entity
-@Table(name = "alquiler")
+@Document(indexName = "rentals", createIndex = true)
 @Getter
 @Setter
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder
-//@ToString
+@ToString
 public class Rental {
+
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Integer ID_ALQUILER;
+    private String id;
 
-    @Column(name = "ID_CLIENTE")
-    private Integer ID_CLIENTE;
+    @MultiField(mainField = @Field(type = FieldType.Keyword, name = "client"),otherFields = @InnerField(
+            suffix = "search", type=  FieldType.Search_As_You_Type))
+    private String client;
 
-    @Column(name = "ID_PELICULA")
-    private String ID_PELICULA;
+    @MultiField(mainField = @Field(type = FieldType.Keyword, name = "movie"),otherFields = @InnerField(
+            suffix = "search", type=  FieldType.Search_As_You_Type))
+    private String movie;
 
-    @Column(name = "FECHA_INICIO_ALQUILER")
-    private Date FECHA_INICIO_ALQUILER;
+    @Field(type = FieldType.Keyword, name = "FECHA_INICIO_ALQUILER")
+    private String FECHA_INICIO_ALQUILER;
 
-    @Column(name = "FECHA_FIN_ALQUILER")
-    private Date FECHA_FIN_ALQUILER;
+    @Field(type = FieldType.Keyword, name = "FECHA_FIN_ALQUILER")
+    private String FECHA_FIN_ALQUILER;
 
 
 }

@@ -3,18 +3,12 @@ package com.unir.apirest_operaciones.controller;
 import java.util.Collections;
 import java.util.List;
 import java.util.Map;
-
+import java.util.Objects;
 
 
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.DeleteMapping;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestHeader;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import com.unir.apirest_operaciones.service.customers.ICustomersService;
 import com.unir.apirest_operaciones.model.customers.customer.Customer;
@@ -31,16 +25,16 @@ public class CustomersController {
     private final ICustomersService service;
 
     @GetMapping("/customers")
-    public ResponseEntity<List<Customer>> getConst (@RequestHeader Map<String, String> headers) {
+    public ResponseEntity<List<Customer>> getCostumers (
+            @RequestHeader Map<String, String> headers,
+           @RequestParam(required = false) String nombre,
+           @RequestParam(required = false) String apellido,
+           @RequestParam(required = false) String documento) {
 
        System.out.println(headers);
-       List<Customer> customers = service.getCustomers();
+       List<Customer> customers = service.getCustomers(nombre, apellido, documento);
 
-       if (customers!= null) {
-            return ResponseEntity.ok(customers);
-        } else {
-            return ResponseEntity.ok(Collections.emptyList());
-        }
+        return ResponseEntity.ok(Objects.requireNonNullElse(customers, Collections.emptyList()));
     }
 
     @GetMapping("/customers/{customerId}")

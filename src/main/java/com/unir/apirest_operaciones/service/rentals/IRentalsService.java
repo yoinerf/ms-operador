@@ -6,7 +6,7 @@ import com.unir.apirest_operaciones.model.rentals.requestrentals.CreateRentalReq
 import java.util.List;
 
 public interface IRentalsService {
-    List<Rental> getRentals();
+    List<Rental> getRentals(String client, String movie);
 
     Rental getRental(String rentalId);
 

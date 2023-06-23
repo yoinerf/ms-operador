@@ -3,7 +3,7 @@ package com.unir.apirest_operaciones.controller;
 import java.util.Collections;
 import java.util.List;
 import java.util.Map;
-
+import java.util.Objects;
 
 
 import com.unir.apirest_operaciones.model.rentals.rental.Rental;
@@ -11,14 +11,7 @@ import com.unir.apirest_operaciones.model.rentals.requestrentals.CreateRentalReq
 import com.unir.apirest_operaciones.service.rentals.IRentalsService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.DeleteMapping;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestHeader;
-import org.springframework.web.bind.annotation.RestController;
-
+import org.springframework.web.bind.annotation.*;
 
 
 import lombok.RequiredArgsConstructor;
@@ -32,16 +25,15 @@ public class RentalsController {
 
 
     @GetMapping("/rentals")
-    public ResponseEntity<List<Rental>> getRentals(@RequestHeader Map<String, String> headers) {
+    public ResponseEntity<List<Rental>> getRentals(
+            @RequestHeader Map<String, String> headers,
+           @RequestParam(required = false) String client,
+           @RequestParam(required = false) String movie){
 
         System.out.println(headers);
-        List<Rental> rentals = service.getRentals();
+        List<Rental> rentals = service.getRentals(client, movie);
 
-        if (rentals!= null) {
-            return ResponseEntity.ok(rentals);
-        } else {
-            return ResponseEntity.ok(Collections.emptyList());
-        }
+        return ResponseEntity.ok(Objects.requireNonNullElse(rentals, Collections.emptyList()));
     }
 
     @GetMapping("/rentals/{rentalId}")
@@ -72,7 +64,7 @@ public class RentalsController {
     }
 
     @PostMapping("/rentals")
-    public ResponseEntity<Rental> getRental(@RequestBody CreateRentalRequest request) {
+    public ResponseEntity<Rental> createRental(@RequestBody CreateRentalRequest request) {
 
         Rental createdRental = service.createRental(request);
 

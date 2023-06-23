@@ -1,5 +1,6 @@
 package com.unir.apirest_operaciones.service.customers;
 
+import com.unir.apirest_operaciones.data.DataAccessRepository;
 import com.unir.apirest_operaciones.data.ICustomerRepository;
 import com.unir.apirest_operaciones.model.customers.customer.Customer;
 import com.unir.apirest_operaciones.model.customers.requestcustomers.CreateCustomerRequest;
@@ -13,25 +14,22 @@ import java.util.List;
 public class CustomersService implements ICustomersService {
 
     @Autowired
-    private ICustomerRepository repository;
+    private DataAccessRepository repository;
 
     @Override
-    public List<Customer> getCustomers() {
-        List<Customer> customers = repository.findAll();
-        System.out.println(customers);
+    public List<Customer> getCustomers(String nombre, String apellido, String documento) {
+        List<Customer> customers = repository.findCustomer(nombre, apellido, documento);
         return customers.isEmpty() ? null : customers;
     }
 
     @Override
     public Customer getCustomer(String customerId) {
-
-        return repository.findById(Integer.valueOf(customerId)).orElse(null);
+        return repository.findCustomerById(customerId).orElse(null);
     }
 
     @Override
     public Boolean removeCustomer(String customerId) {
-
-        Customer customer = repository.findById(Integer.valueOf(customerId)).orElse(null);
+        Customer customer = repository.findCustomerById(customerId).orElse(null);
 
         if (customer != null) {
             repository.delete(customer);
@@ -48,7 +46,7 @@ public class CustomersService implements ICustomersService {
                 && StringUtils.hasLength(request.getAPELLIDOS().trim())
                 && request.getNUMERODOCUMENTO() != null) {
 
-            Customer customer = Customer.builder().NOMBRES(request.getNOMBRES()).APELLIDOS(request.getAPELLIDOS()).NUMERODOCUMENTO(request.getNUMERODOCUMENTO()).Rentals(request.getRENTALS())
+            Customer customer = Customer.builder().nombres(request.getNOMBRES()).apellidos(request.getAPELLIDOS()).documento(request.getNUMERODOCUMENTO()).Rentals(request.getRENTALS())
                     .build();
 
             return repository.save(customer);

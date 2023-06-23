@@ -1,6 +1,6 @@
 package com.unir.apirest_operaciones.service.rentals;
 
-import com.unir.apirest_operaciones.data.IRentalRepository;
+import com.unir.apirest_operaciones.data.DataAccessRepository;
 import com.unir.apirest_operaciones.facade.MoviesFacade;
 
 import com.unir.apirest_operaciones.model.rentals.rental.Rental;
@@ -15,27 +15,33 @@ import java.util.List;
 @Service
 public class RentalsService implements IRentalsService {
 
+
     @Autowired
-    private IRentalRepository repository;
+    private DataAccessRepository repository;
 
     @Autowired
     private MoviesFacade moviesFacade;
 
 
     @Override
-    public List<Rental> getRentals() {
-        List<Rental> rentals= repository.findAll();
-        return rentals.isEmpty() ? null: rentals;
+    public List<Rental> getRentals(String client, String movie) {
+        List<Rental> rentals = repository.findRentals(client, movie);
+        return rentals.isEmpty() ? null : rentals;
     }
+//    @Override
+//    public List<Rental> getRentals() {
+//        List<Rental> rentals= repository.findAll();
+//        return rentals.isEmpty() ? null: rentals;
+//    }
 
     @Override
     public Rental getRental(String rentalId) {
-        return repository.findById(Integer.valueOf(rentalId)).orElse(null) ;
+        return repository.findById(rentalId).orElse(null) ;
     }
 
     @Override
     public Boolean removeRental(String rentalId) {
-        Rental rental=repository.findById(Integer.valueOf(rentalId)).orElse(null);
+        Rental rental=repository.findById(rentalId).orElse(null);
 
         if (rental != null) {
             repository.delete(rental);
@@ -47,20 +53,20 @@ public class RentalsService implements IRentalsService {
 
     @Override
     public Rental createRental(CreateRentalRequest request) {
-        if (request != null && request.getID_CLIENTE()!=null
-                && request.getID_PELICULA()!=null
+        if (request != null && request.getClient()!=null
+                && request.getMovie()!=null
                 && request.getFECHA_INICIO_ALQUILER() != null
                 && request.getFECHA_FIN_ALQUILER() !=null
             ) {
 
             Rental rental = Rental.builder()
-                              .ID_CLIENTE(request.getID_CLIENTE())
-                              .ID_PELICULA(request.getID_PELICULA())
+                              .client(request.getClient())
+                              .movie(request.getMovie())
                               .FECHA_INICIO_ALQUILER(request.getFECHA_INICIO_ALQUILER())
                               .FECHA_FIN_ALQUILER(request.getFECHA_FIN_ALQUILER())
                               .build();
 
-            ResponseEntity<String> respuestaPeli = moviesFacade.getMovie(rental.getID_PELICULA());
+            ResponseEntity<String> respuestaPeli = moviesFacade.getMovie(rental.getMovie());
             if (!respuestaPeli.getStatusCode().equals(HttpStatus.OK)){
                 return null;
             }

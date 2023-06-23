@@ -1,48 +1,43 @@
 package com.unir.apirest_operaciones.model.customers.customer;
 
 import com.unir.apirest_operaciones.model.rentals.rental.Rental;
-import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 import lombok.ToString;
-import org.springframework.context.annotation.Primary;
+import org.springframework.data.annotation.Id;
+import org.springframework.data.elasticsearch.annotations.*;
 
 import java.util.List;
 
 
-@Entity
-@Table(name = "clientes")
+@Document(indexName = "costumers", createIndex = true)
 @Getter
 @Setter
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder
-//@ToString
+@ToString
 public class Customer {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column (name="ID_CLIENTE", unique = true)
-    private Integer ID_CLIENTE;
+    private String id;
 
-    @Column(name = "NOMBRES")
-    private String NOMBRES;
+    @MultiField(mainField = @Field(type = FieldType.Keyword, name = "nombres"),otherFields = @InnerField(
+            suffix = "search", type=  FieldType.Search_As_You_Type))
+    private String nombres;
 
-    @Column(name = "APELLIDOS")
-    private String APELLIDOS;
+    @MultiField(mainField = @Field(type = FieldType.Keyword, name = "apellidos"),otherFields = @InnerField(
+            suffix = "search", type=  FieldType.Search_As_You_Type))
+    private String apellidos;
 
-    @Column(name = "NUMERODOCUMENTO")
-    private Integer NUMERODOCUMENTO;
+    @Field(type = FieldType.Integer, name = "documento")
+    private Integer documento;
 
-    @OneToMany()
-    @JoinTable(
-            name = "alquiler",
-            joinColumns = @JoinColumn(name = "ID_CLIENTE"),
-            inverseJoinColumns = @JoinColumn(name = "ID_ALQUILER")
-    )
+
+    @Field(type = FieldType.Nested, name = "Rentals")
     private List<Rental> Rentals;
 
 }

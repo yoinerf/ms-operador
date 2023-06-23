@@ -21,11 +21,11 @@ server:
   eureka:
     client:
     service-url:
-      defaultZone: ${EUREKA_URL:http://172.17.0.3:8761/eureka}
+      defaultZone: ${EUREKA_URL:https://eureka-production-movies.up.railway.app/eureka}
   instance:
     preferIpAddress: true
-    hostname: ms-operaciones-peliculas
+    hostname: ms-operaciones-production-movies.up.railway.app
 
 ## Configuracion secundaria (custom)
 getProduct:
-  url: http://ms-buscador-peliculas/movies/%s
+  url: https://cloud-gateway-production-movies.up.railway.app/ms-buscador-peliculas/movies/%s

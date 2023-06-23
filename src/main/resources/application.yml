@@ -1,0 +1,31 @@
+## Configuracion de Spring
+spring:
+  application:
+    name: ms-operaciones-peliculas
+  datasource:
+    url: jdbc:mysql://localhost:3306/dboperaciones
+    username: root
+    password: 123456
+    driver-class-name: com.mysql.cj.jdbc.Driver
+  jpa:
+    properties:
+      hibernate:
+        dialect: org.hibernate.dialect.MySQL5Dialect
+    show-sql: true
+
+## Configuracion de Instancia
+server:
+  port: 8088
+
+## Configuracion del cliente de Eureka
+  eureka:
+    client:
+    service-url:
+      defaultZone: ${EUREKA_URL:http://172.17.0.3:8761/eureka}
+  instance:
+    preferIpAddress: true
+    hostname: ms-operaciones-peliculas
+
+## Configuracion secundaria (custom)
+getProduct:
+  url: http://ms-buscador-peliculas/movies/%s

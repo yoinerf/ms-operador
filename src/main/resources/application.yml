@@ -14,25 +14,25 @@ spring:
     show-sql: true
 
 ## Configuracion de Instancia
-server:
-  port: 8088
-
-## Configuracion del cliente de Eureka
-  eureka:
-    instance:
-      preferIpAddress: false
-      hostname: ${HOSTNAME:ms-operaciones-production-movies.up.railway.app}
-      non-secure-port-enable: false
-      secure-port-enable: true
-      non-secure-port: 80
-      secure-port: 443
-
-    client:
-      registerWithEureka: true
-      fetchRegistry: true
-      serviceUrl:
-        defaultZone: ${EUREKA_URL:https://eureka-production-movies.up.railway.app/eureka}
-
-## Configuracion secundaria (custom)
-getProduct:
-  url: https://cloud-gateway-production-movies.up.railway.app/ms-buscador-peliculas/movies/%s
+#server:
+#  port: 8088
+#
+### Configuracion del cliente de Eureka
+#  eureka:
+#    instance:
+#      preferIpAddress: false
+#      hostname: ${HOSTNAME:ms-operaciones-production-movies.up.railway.app}
+#      non-secure-port-enable: false
+#      secure-port-enable: true
+#      non-secure-port: 80
+#      secure-port: 443
+#
+#    client:
+#      registerWithEureka: true
+#      fetchRegistry: true
+#      serviceUrl:
+#        defaultZone: ${EUREKA_URL:https://eureka-production-movies.up.railway.app/eureka}
+#
+### Configuracion secundaria (custom)
+#getProduct:
+#  url: https://cloud-gateway-production-movies.up.railway.app/ms-buscador-peliculas/movies/%s

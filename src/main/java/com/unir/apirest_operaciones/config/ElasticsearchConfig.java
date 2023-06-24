@@ -1,5 +1,4 @@
 package com.unir.apirest_operaciones.config;
-
 import org.apache.http.HttpHost;
 import org.apache.http.auth.AuthScope;
 import org.apache.http.auth.UsernamePasswordCredentials;
@@ -18,31 +17,33 @@ import org.springframework.data.elasticsearch.repository.config.EnableElasticsea
 
 @Configuration
 @EnableElasticsearchRepositories(basePackages = "com.unir.apirest_operaciones.data")
-
 public class ElasticsearchConfig {
 
     @Value("${elasticsearch.host}")
     private String clusterEndpoint;
+
     @Value("${elasticsearch.credentials.user}")
     private String username;
+
     @Value("${elasticsearch.credentials.password}")
     private String password;
 
     @Bean
     public ElasticsearchOperations elasticsearchTemplate() {
-
         final CredentialsProvider credentialsProvider = new BasicCredentialsProvider();
-        credentialsProvider.setCredentials(AuthScope.ANY,
-                new UsernamePasswordCredentials(username, password));
+        credentialsProvider.setCredentials(AuthScope.ANY, new UsernamePasswordCredentials(username,password));
 
         return new ElasticsearchRestTemplate(
                 new RestHighLevelClient(RestClient.builder(new HttpHost(clusterEndpoint, 443, "https"))
                         .setHttpClientConfigCallback(new RestClientBuilder.HttpClientConfigCallback() {
                             @Override
-                            public HttpAsyncClientBuilder customizeHttpClient(
-                                    HttpAsyncClientBuilder httpClientBuilder) {
+                            public HttpAsyncClientBuilder customizeHttpClient(HttpAsyncClientBuilder httpClientBuilder) {
+                                // TODO Auto-generated method stub
                                 return httpClientBuilder.setDefaultCredentialsProvider(credentialsProvider);
                             }
-                        })));
+                        })
+                )
+        );
     }
+
 }

@@ -13,7 +13,7 @@ import org.springframework.data.elasticsearch.annotations.*;
 import java.util.List;
 
 
-@Document(indexName = "costumers", createIndex = true)
+@Document(indexName = "costumers", createIndex = false)
 @Getter
 @Setter
 @AllArgsConstructor

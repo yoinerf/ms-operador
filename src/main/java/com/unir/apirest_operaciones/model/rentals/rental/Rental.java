@@ -6,7 +6,7 @@ import org.springframework.data.annotation.Id;
 import org.springframework.data.elasticsearch.annotations.*;
 
 
-@Document(indexName = "rentals", createIndex = true)
+@Document(indexName = "rentals", createIndex = false)
 @Getter
 @Setter
 @AllArgsConstructor
